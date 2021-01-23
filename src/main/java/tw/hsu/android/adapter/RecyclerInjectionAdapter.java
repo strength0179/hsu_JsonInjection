@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import tw.hsu.SetPosition;
 import tw.hsu_ObjectInjection;
 
 /**
@@ -39,7 +40,7 @@ public class RecyclerInjectionAdapter<T> extends RecyclerView.Adapter<RecyclerHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerHolder holder, int position) {
-        holder.setData(list.get(position), id, new ItemClick(position));
+        holder.setData(this, list.get(position), id, position, new ItemClick(position));
     }
 
     @Override
@@ -87,16 +88,19 @@ public class RecyclerInjectionAdapter<T> extends RecyclerView.Adapter<RecyclerHo
 
 class RecyclerHolder<T> extends RecyclerView.ViewHolder{
 
-
     public RecyclerHolder(@NonNull View itemView) {
         super(itemView);
     }
 
-    public void setData(T data, int id, View.OnClickListener click){
+    public void setData(RecyclerView.Adapter adapter, T data, int id, int position, View.OnClickListener click){
         View injector = itemView.findViewById(id);
 
         if(injector instanceof hsu_ObjectInjection){
             ((hsu_ObjectInjection)injector).setObject(data);
+//            if(injector instanceof SetPosition){
+//                ((SetPosition)injector).setPosition(adapter,
+//                        position);
+//            }
         }
         else{
             ((TextView)injector).setText(data.toString());
